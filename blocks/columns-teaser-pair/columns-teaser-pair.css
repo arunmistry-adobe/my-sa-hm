@@ -39,7 +39,7 @@
   display: none;
 }
 
-/* caption bar: title left, underlined CTA right, 20px below the image */
+/* caption bar: title at the start, underlined CTA at the end, 20px below the image */
 .columns-teaser-pair .columns-teaser-pair-content {
   display: flex;
   justify-content: space-between;

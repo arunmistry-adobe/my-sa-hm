@@ -1,17 +1,17 @@
 /* store switcher (multistore) */
 .storeview-switcher-button {
   background: transparent;
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .storeview-modal-storeview-title {
-  margin-bottom: var(--spacing-xxbig);
+  margin-block-end: var(--spacing-xxbig);
   padding-inline-start: var(--spacing-xbig);
 }
 
 .modal .close-button {
-  top: 40px !important;
-  right: 40px !important;
+  inset-block-start: 40px !important;
+  inset-inline-end: 40px !important;
 }
 
 .storeview-single-store {
@@ -23,8 +23,12 @@
   list-style-position: inside;
 }
 
+.storeview-selection .storeview-multiple-stores:dir(rtl) {
+  list-style-image: url("../../icons/chevron-left.svg");
+}
+
 .storeview-selection > li {
-  margin-bottom: var(--spacing-small);
+  margin-block-end: var(--spacing-small);
 }
 
 .storeview-multiple-stores > ul {
@@ -42,13 +46,13 @@
 }
 
 .storeview-multiple-stores[aria-expanded="true"] > ul {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .storeview-multiple-stores[aria-expanded="true"] > ul > li {
   display: block;
   list-style-type: none;
-  margin-bottom: var(--spacing-small);
+  margin-block-end: var(--spacing-small);
 }
 
 footer {
@@ -120,7 +124,8 @@ footer .footer .footer-column-toggle {
   display: block;
   width: 100%;
   margin: 0;
-  padding: 0 40px 0 0;
+  padding-block: 0;
+  padding-inline: 0 40px;
   border: 0;
   border-radius: 0;
   background: none;
@@ -136,7 +141,7 @@ footer .footer .footer-column-toggle {
 footer .footer .footer-column-toggle::after {
   content: "";
   position: absolute;
-  top: 50%;
+  inset-block-start: 50%;
   inset-inline-end: 4px;
   width: 16px;
   height: 16px;
@@ -318,7 +323,7 @@ footer .footer .footer-legal .footer-social img {
 footer .footer .footer-back-to-top {
   position: fixed;
   inset-inline-end: 20px;
-  bottom: 100px;
+  inset-block-end: 100px;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -360,7 +365,7 @@ footer .footer .footer-back-to-top svg {
 
 @media (min-width: 900px) {
   footer .footer > div {
-    padding-top: 80px;
+    padding-block-start: 80px;
   }
 
   footer .footer .footer-columns {
@@ -383,7 +388,7 @@ footer .footer .footer-back-to-top svg {
   }
 
   footer .footer .footer-column-toggle {
-    padding: 0;
+    padding-inline: 0;
     cursor: default;
   }
 
@@ -407,7 +412,7 @@ footer .footer .footer-back-to-top svg {
   }
 
   footer .footer .footer-newsletter-form {
-    margin-top: 30px;
+    margin-block-start: 30px;
   }
 
   footer .footer .footer-info {
@@ -421,7 +426,7 @@ footer .footer .footer-back-to-top svg {
 
   footer .footer .footer-info .footer-logo {
     display: block;
-    margin-top: 40px;
+    margin-block-start: 40px;
     line-height: 0;
   }
 

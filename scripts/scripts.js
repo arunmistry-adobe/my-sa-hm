@@ -250,6 +250,24 @@ export function getContentPath(path) {
   return window.location.pathname.startsWith('/content/') ? `/content${path}` : path;
 }
 
+// Site languages: English at the root and /en/, Arabic (right-to-left) under /ar/
+const LOCALES = {
+  en: { lang: 'en', dir: 'ltr', prefix: '' },
+  ar: { lang: 'ar', dir: 'rtl', prefix: '/ar' },
+};
+
+/**
+ * Returns the language of the current page from its path (ignoring the local
+ * preview's /content/ prefix).
+ * @returns {{lang: string, dir: string, prefix: string}} prefix is the folder
+ * holding that language's nav and footer ('' for the root ones)
+ */
+export function getLocale() {
+  const path = window.location.pathname.replace(/^\/content(?=\/)/, '');
+  const [, first] = path.split('/');
+  return LOCALES[first] || LOCALES.en;
+}
+
 function buildDynamicMediaImages(main) {
   // Anchors carrying DM URLs from the markdown round-trip. The transformer
   // turns <img DM> into <a href=DM-URL> (or <a href=/page title=DM-URL>
@@ -446,7 +464,9 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
+  const { lang, dir } = getLocale();
+  document.documentElement.lang = lang;
+  document.documentElement.dir = dir;
   decorateTemplateAndTheme();
 
   const main = doc.querySelector('main');

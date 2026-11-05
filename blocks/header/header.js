@@ -3,7 +3,7 @@ import { events } from '@dropins/tools/event-bus.js';
 
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { getMetadata, loadSections } from '../../scripts/aem.js';
-import { decorateMain, getContentPath } from '../../scripts/scripts.js';
+import { decorateMain, getContentPath, getLocale } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { fetchPlaceholders, getProductLink, rootLink } from '../../scripts/commerce.js';
 
@@ -44,13 +44,18 @@ function rebaseMedia(doc, base) {
 }
 
 /**
- * Loads the nav document (under /content/ in the local preview, at the root
- * on published sites).
+ * Loads the nav document of the page's language (e.g. /ar/nav.plain.html),
+ * falling back to the root one; under /content/ in the local preview.
  * @returns {Promise<HTMLElement|null>} decorated <main> holding the nav sections
  */
 async function loadNav() {
-  const path = getContentPath('/nav.plain.html');
-  const resp = await fetch(path);
+  const { prefix } = getLocale();
+  let path = getContentPath(`${prefix}/nav.plain.html`);
+  let resp = await fetch(path);
+  if (!resp.ok && prefix) {
+    path = getContentPath('/nav.plain.html');
+    resp = await fetch(path);
+  }
   if (!resp.ok) return null;
 
   const doc = new DOMParser().parseFromString(await resp.text(), 'text/html');
@@ -736,9 +741,20 @@ export default async function decorate(block) {
     languageButton.append(languageLabel);
     languageOptions = createElement('ul', 'nav-language-options', { id: 'nav-language-options' });
     languageOptions.hidden = true;
+    // the current language's link is the one into its folder (/en/…, /ar/…)
+    const { lang } = getLocale();
+    const isCurrentLanguage = (a) => {
+      const [, folder] = new URL(a.href).pathname.replace(/^\/content(?=\/)/, '').split('/');
+      return folder === lang;
+    };
     languageLinks.forEach((a) => {
       const li = createElement('li', 'nav-language-option');
-      li.append(createLink(a.href, a.textContent.trim(), 'nav-language-link'));
+      const link = createLink(a.href, a.textContent.trim(), 'nav-language-link');
+      if (isCurrentLanguage(a)) {
+        li.classList.add('active');
+        link.setAttribute('aria-current', 'true');
+      }
+      li.append(link);
       languageOptions.append(li);
     });
     languageButton.addEventListener('click', () => toggleLanguage());
@@ -842,7 +858,9 @@ export default async function decorate(block) {
     tab.addEventListener('click', () => selectDepartment(i));
     tab.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      const next = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+      // the arrow pointing along the reading direction moves to the next tab
+      const forward = document.documentElement.dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+      const next = (i + (e.key === forward ? 1 : -1) + tabs.length) % tabs.length;
       selectDepartment(next);
       tabs[next].focus();
     });

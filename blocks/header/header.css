@@ -1,6 +1,6 @@
 /*
  * H&M header: promo strip + main row, department tabs, Commerce tools
- * and a left drawer with department menus, drill-down panels and promo cards.
+ * and a drawer (left edge, right edge in RTL) with department menus, drill-down panels and promo cards.
  * Mobile-first (mobile layout = source < 1024px); the desktop layout starts at 900px.
  */
 header {
@@ -47,7 +47,8 @@ header .nav-promo {
   justify-content: space-between;
   gap: 16px;
   height: var(--header-promo-height);
-  padding: 0 45px 0 12px;
+  padding-block: 0;
+  padding-inline: 12px 45px;
   background-color: var(--header-promo-bg);
   font: 400 14px/1.3 var(--header-font);
   color: #000;
@@ -72,7 +73,7 @@ header .nav-promo .nav-promo-link:hover {
 
 @media (min-width: 900px) {
   header .nav-promo {
-    padding: 0 85px 0 40px;
+    padding-inline: 40px 85px;
     line-height: 1.5;
   }
 
@@ -96,7 +97,8 @@ header nav {
     'brand tools hamburger' var(--header-row-height)
     'tabs tabs tabs' var(--header-tabs-height) / 1fr auto auto;
   align-items: center;
-  padding: 0 15px 0 12px;
+  padding-block: 0;
+  padding-inline: 12px 15px;
   background-color: var(--color-neutral-50);
 }
 
@@ -139,7 +141,7 @@ header nav .nav-brand img {
 header nav .nav-hamburger {
   grid-area: hamburger;
   flex: 0 0 auto;
-  margin-left: 13px;
+  margin-inline-start: 13px;
 }
 
 header nav .nav-hamburger button {
@@ -156,7 +158,7 @@ header nav .nav-hamburger button {
 
 @media (min-width: 900px) {
   header nav .nav-hamburger {
-    margin-left: 60px;
+    margin-inline-start: 60px;
   }
 
   header nav .nav-hamburger button {
@@ -169,7 +171,8 @@ header nav .nav-hamburger button {
 header nav .nav-sections {
   grid-area: tabs;
   align-self: stretch;
-  margin: 0 -15px 0 -12px;
+  margin-block: 0;
+  margin-inline: -12px -15px;
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -217,12 +220,14 @@ header nav .nav-tabs li.active .nav-tab-link {
     flex: 0 1 auto;
     align-self: auto;
     min-width: 0;
-    margin: 0 0 0 58px;
+    margin-block: 0;
+    margin-inline: 58px 0;
     overflow: visible;
   }
 
   header nav .nav-tabs li {
-    margin: 0 8px 0 0;
+    margin-block: 0;
+    margin-inline: 0 8px;
   }
 
   header nav .nav-tab-link {
@@ -233,7 +238,7 @@ header nav .nav-tabs li.active .nav-tab-link {
 
 @media (min-width: 900px) and (max-width: 1199px) {
   header nav .nav-sections {
-    margin-left: 24px;
+    margin-inline-start: 24px;
   }
 
   header nav .nav-tabs li {
@@ -252,7 +257,7 @@ header nav .nav-tools {
   flex: 0 0 auto;
   align-items: center;
   gap: 8px;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 @media (min-width: 900px) {
@@ -316,7 +321,7 @@ header nav .nav-tools button.nav-cart-button[data-count]::after {
   content: attr(data-count);
   position: absolute;
   top: -2px;
-  right: -6px;
+  inset-inline-end: -6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -377,7 +382,8 @@ header nav .nav-language-button {
   gap: 2px;
   height: 16px;
   margin: 0;
-  padding: 0 14px 0 0;
+  padding-block: 0;
+  padding-inline: 0 14px;
   border: 0;
   border-radius: 0;
   background: transparent url('../../icons/hm/chevron-down.svg') right center / 14px no-repeat;
@@ -400,7 +406,7 @@ header nav .nav-language-label {
 header nav .nav-language-options {
   position: absolute;
   top: calc(var(--header-row-height) - 12px);
-  right: 16px;
+  inset-inline-end: 16px;
   z-index: 100;
   width: 200px;
   margin: 0;
@@ -444,7 +450,7 @@ header nav .nav-language-link:hover {
 
   header nav .nav-language-options {
     top: calc(100% + 18px);
-    right: 0;
+    inset-inline-end: 0;
   }
 }
 
@@ -453,8 +459,7 @@ header nav .nav-tools-panel {
   z-index: 100;
   position: absolute;
   top: var(--header-row-height);
-  right: 0;
-  left: 0;
+  inset-inline: 0;
   display: none;
   box-sizing: border-box;
   width: auto;
@@ -469,7 +474,7 @@ header nav .nav-tools-panel--show {
 @media (min-width: 900px) {
   header nav .nav-tools-panel {
     top: calc(100% + 24px);
-    left: auto;
+    inset-inline-start: auto;
     width: min(398px, calc(100vw - 32px));
   }
 }
@@ -500,11 +505,22 @@ header .overlay.show {
   }
 }
 
+@keyframes nav-drawer-slide-in-rtl {
+  0% {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 header .nav-drawer {
   position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
+  inset-block: 0;
+  inset-inline-start: 0;
   z-index: 6;
   display: flex;
   flex-direction: column;
@@ -608,7 +624,7 @@ header .nav-drawer-close {
   position: relative;
   width: 24px;
   height: 24px;
-  margin-right: 15px;
+  margin-inline-end: 15px;
   padding: 0;
 }
 
@@ -617,7 +633,7 @@ header .nav-drawer-close::after {
   content: '';
   position: absolute;
   top: calc(50% - 0.5px);
-  left: 2px;
+  inset-inline-start: 2px;
   width: 20px;
   height: 1px;
   background-color: #000;
@@ -865,7 +881,8 @@ header .nav-drawer-card-caption {
   header .nav-drawer-cards {
     display: block;
     flex: 0 0 190px;
-    margin: 38px 28px 0 0;
+    margin-block: 38px 0;
+    margin-inline: 0 28px;
     overflow: hidden auto;
   }
 }
@@ -910,7 +927,8 @@ header .nav-drawer-back {
 
 header .nav-drawer-subpanel-title {
   flex: 1 1 auto;
-  margin: 0 22px 0 0;
+  margin-block: 0;
+  margin-inline: 0 22px;
   font: 400 14px/21.6px var(--header-font);
   letter-spacing: normal;
   text-align: center;
@@ -953,7 +971,7 @@ header .nav-drawer .nav-drawer-sublist .nav-drawer-link {
   header .nav-drawer-back {
     width: 32px;
     height: 32px;
-    margin-left: -10px;
+    margin-inline-start: -10px;
   }
 
   header .nav-drawer-subpanel-title {
@@ -992,6 +1010,24 @@ header .nav-drawer .nav-drawer-sublist .nav-drawer-link {
 header .nav-drawer :focus-visible {
   outline: 2px solid #000;
   outline-offset: 2px;
+}
+
+/* right-to-left: logical properties mirror the layout; these cover the rest */
+html[dir='rtl'] header nav .nav-language-button {
+  background-position: left center;
+}
+
+html[dir='rtl'] header .nav-drawer {
+  animation-name: nav-drawer-slide-in-rtl;
+}
+
+html[dir='rtl'] header .nav-drawer-back {
+  transform: scaleX(-1);
+}
+
+/* current language in the switcher */
+header nav .nav-language-option.active .nav-language-link {
+  font-weight: 600;
 }
 
 header .nav-search-panel {

@@ -28,7 +28,7 @@
   display: none;
 }
 
-/* caption bar below the image: title left, underlined CTA right */
+/* caption bar below the image: title at the start, underlined CTA at the end */
 .hero-content-bottom .hero-content-bottom-content {
   position: relative;
   padding: 20px 16px 0;
@@ -56,7 +56,7 @@
 .hero-content-bottom .hero-content-bottom-cta-wrapper {
   position: absolute;
   top: 20px;
-  right: 16px;
+  inset-inline-end: 16px;
   margin: 0;
 }
 
@@ -107,6 +107,6 @@ main .hero-content-bottom a.hero-content-bottom-cta.button:any-link {
   }
 
   .hero-content-bottom .hero-content-bottom-cta-wrapper {
-    right: 20px;
+    inset-inline-end: 20px;
   }
 }

@@ -35,7 +35,7 @@ No events are directly emitted by this block. However, it triggers events indire
 
 The block reads the following metadata tags:
 
-- `nav` - not used. The nav document is fetched from `/nav.plain.html`, or from `/content/nav.plain.html` when the page itself is served under `/content/` (local preview)
+- `nav` - not used. The nav document is chosen by the page's language (`getLocale()`). It is `{prefix}/nav.plain.html` (e.g. `/ar/nav.plain.html` for Arabic pages), with `/nav.plain.html` as the fallback when a language folder has no nav. Both are under `/content/` when the page itself is served from there (local preview)
 - `wishlist` - Path to wishlist page (default: `/wishlist`)
 - `mini-cart` - Path to mini cart fragment (default: `/mini-cart`)
 
@@ -59,7 +59,7 @@ The nav document is flat: top-level sections only, holding headings, paragraphs,
    - **bold** (`<strong>`) makes an item large and bold; *italic* (`<em>`) makes it red (H&M sale red). Both can be combined;
    - a nested list whose items contain an **image** is the department's **promo cards** list. Each item is an image followed by a caption link (`<li><img src="https://…" alt=""><a href="…">LOUNGEWEAR</a></li>`). Cards appear in the drawer's right column.
 4. **Utility links** – one or more lists of links shown at the bottom of every department menu. The first list follows the menu items, and the last list is pinned to the bottom of the drawer.
-5. **Tools** – a paragraph with the language switcher label (e.g. `EN`), then a list of language links (`English`, `عربي`).
+5. **Tools** – a paragraph with the language switcher label (e.g. `EN`, `AR`), then a list of site-relative language links (`/en/` English, `/ar/` عربي). The link whose first folder matches the page's language is marked as current (`aria-current`).
 
 A trailing `metadata` section (e.g. `Robots: noindex, nofollow`) is ignored by the block. Relative image paths are resolved against the nav document URL.
 
@@ -78,6 +78,12 @@ The rendered header contains:
 5. **Focus Management**: Focus moves to the close button on open and is kept inside the drawer while it is open.
 6. **Sticky**: The promo strip scrolls away. The main row stays fixed at the top (`position: sticky` on `header`).
 7. **Language switcher**: A globe + label + chevron button opens a dropdown with the language links. A click outside or Escape closes it.
+8. **Right-to-left**: On `<html dir="rtl">` pages (Arabic) everything mirrors through logical CSS properties:
+   - the logo moves to the right and the tools to the left;
+   - the drawer opens from the right edge with the mirrored slide-in;
+   - the language dropdown aligns to the left;
+   - the drill-down back arrow is flipped;
+   - in the drawer tabs, the arrow key pointing along the reading direction moves to the next tab.
 
 #### Wishlist
 1. Users click wishlist button to navigate to wishlist page

@@ -1,5 +1,6 @@
 /*
- * hero-sale: full-bleed campaign banner (source: hmns sale-banner, content-left-middle).
+ * hero-sale: full-bleed campaign banner (source: hmns sale-banner, content-left-middle;
+ * mirrored to the right in right-to-left pages).
  * Campaign colours were per-banner config on the source; the defaults below are the
  * current live look and can be overridden per page/section via these custom properties.
  */
@@ -101,7 +102,7 @@
 .hero-sale .hero-sale-legal {
   position: absolute;
   top: 100%;
-  left: 3.2rem;
+  inset-inline-start: 3.2rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -121,10 +122,10 @@
   color: inherit;
 }
 
-/* "Shop Now" toggle at the right of the bottom bar */
+/* "Shop Now" toggle at the end of the bottom bar */
 .hero-sale .hero-sale-toggle {
   position: absolute;
-  right: 2rem;
+  inset-inline-end: 2rem;
   bottom: -3.5rem;
   z-index: 3;
   margin: 0;
@@ -146,7 +147,7 @@
   content: "";
   position: absolute;
   top: 50%;
-  right: -1.5rem;
+  inset-inline-end: -1.5rem;
   width: 1.6rem;
   height: 1.6rem;
   transform: translateY(-50%);
@@ -182,7 +183,7 @@
 
 .hero-sale.expanded .hero-sale-ctas {
   position: absolute;
-  right: 0;
+  inset-inline-end: 0;
   bottom: 0;
   z-index: 2;
   display: block;
@@ -228,7 +229,7 @@ main .hero-sale a.hero-sale-cta:any-link:hover {
 /* a single CTA is shown directly in the bottom bar, where the toggle would be */
 .hero-sale.hero-sale-single-cta .hero-sale-ctas {
   position: absolute;
-  right: 2rem;
+  inset-inline-end: 2rem;
   bottom: -3.5rem;
   display: block;
 }
@@ -245,6 +246,11 @@ main .hero-sale.hero-sale-single-cta a.hero-sale-cta:any-link {
 
 main .hero-sale.hero-sale-single-cta a.hero-sale-cta:any-link::after {
   content: none;
+}
+
+/* the CTA arrow points along the reading direction */
+html[dir='rtl'] main .hero-sale a.hero-sale-cta:any-link::after {
+  transform: none;
 }
 
 @media (min-width: 900px) {
@@ -270,7 +276,7 @@ main .hero-sale.hero-sale-single-cta a.hero-sale-cta:any-link::after {
   }
 
   .hero-sale .hero-sale-legal {
-    left: 4rem;
+    inset-inline-start: 4rem;
     padding: 0 1rem;
     font-size: 1.4rem;
   }
