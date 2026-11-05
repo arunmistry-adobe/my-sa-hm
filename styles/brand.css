@@ -1,12 +1,14 @@
 /*
  * H&M (sa.hm.com) brand tokens, extracted from the source site's computed styles.
- * The source typeface (HM Slussen) is proprietary; Inter (text) and Archivo at
- * 125% width (extended/wide display) are used as openly licensed lookalikes.
+ * The source typefaces are proprietary; openly licensed lookalikes stand in:
+ * Inter (text) and Archivo at 125% width (extended/wide display) for HM Slussen,
+ * and Noto Sans Arabic / Noto Kufi Arabic for the Arabic faces, which only
+ * Arabic characters reach because they follow the Latin fonts in each stack.
  */
 :root {
   /* fonts */
-  --brand-font-body: inter, inter-fallback, "helvetica neue", helvetica, arial, sans-serif;
-  --brand-font-display: archivo, archivo-fallback, "helvetica neue", helvetica, arial, sans-serif;
+  --brand-font-body: inter, "noto sans arabic", inter-fallback, "helvetica neue", helvetica, arial, sans-serif;
+  --brand-font-display: archivo, "noto kufi arabic", archivo-fallback, "helvetica neue", helvetica, arial, sans-serif;
   --brand-font-display-stretch: 125%;
 
   /* colors */

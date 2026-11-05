@@ -9,9 +9,15 @@ import {
 import createModal from '../modal/modal.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { loadSections } from '../../scripts/aem.js';
-import { decorateMain, getContentPath } from '../../scripts/scripts.js';
+import { decorateMain, getContentPath, getLocale } from '../../scripts/scripts.js';
 
 const DESKTOP_MEDIA = window.matchMedia('(min-width: 900px)');
+
+// accessible names of icon-only UI controls, per page language
+const UI_LABELS = {
+  en: { backToTop: 'Back to top' },
+  ar: { backToTop: 'العودة إلى الأعلى' },
+};
 
 let uid = 0;
 function nextId(prefix) {
@@ -78,8 +84,12 @@ function resolveMediaPaths(container, baseUrl) {
  * @returns {Promise<HTMLElement|null>} decorated main element
  */
 async function loadContentFragment() {
-  // under /content/ in the local preview, at the root on published sites
-  const result = await fetchFirstAvailable([getContentPath('/footer.plain.html')]);
+  // the page language's footer (e.g. /ar/footer), under /content/ in the local preview;
+  // the root footer is only requested if a language-specific one is missing
+  const { prefix } = getLocale();
+  const paths = [getContentPath(`${prefix}/footer.plain.html`)];
+  if (prefix) paths.push(getContentPath('/footer.plain.html'));
+  const result = await fetchFirstAvailable(paths);
   if (!result) return null;
   // parse in an inert document so relative images are not requested from the page path
   const doc = new DOMParser().parseFromString(result.html, 'text/html');
@@ -294,7 +304,8 @@ function buildBackToTop() {
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'footer-back-to-top';
-  button.setAttribute('aria-label', 'Back to top');
+  const labels = UI_LABELS[getLocale().lang] || UI_LABELS.en;
+  button.setAttribute('aria-label', labels.backToTop);
   button.innerHTML = '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M8 13.5V3M3.5 7.5 8 3l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
   button.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 

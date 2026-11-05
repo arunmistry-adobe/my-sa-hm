@@ -1,5 +1,8 @@
 /*
- * Openly licensed lookalikes for H&M's proprietary HM Slussen typeface:
- * Inter for text, Archivo (width axis up to 125%) for extended/wide display type.
+ * Openly licensed lookalikes for H&M's proprietary typefaces:
+ * Inter for text and Archivo (width axis up to 125%) for extended/wide display
+ * type (HM Slussen); Noto Sans Arabic for Arabic text (alshaya) and Noto Kufi
+ * Arabic for Arabic display type (HM Ampersand Arabic Kufi). The Arabic fonts
+ * follow the Latin ones in each stack, so only Arabic characters use them.
  */
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&family=Inter:wght@400;600;700&family=Noto+Kufi+Arabic:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap');

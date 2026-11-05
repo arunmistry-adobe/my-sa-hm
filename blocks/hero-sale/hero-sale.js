@@ -25,11 +25,26 @@ function optimizePictures(root) {
   });
 }
 
+// UI labels built by the block (not authored), per page language
+const LABELS = {
+  en: {
+    shopNow: 'Shop Now', close: 'Close', days: 'Days', hours: 'Hours', minutes: 'Mins', seconds: 'Secs',
+  },
+  ar: {
+    shopNow: 'تسوقي الآن', close: 'إغلاق', days: 'أيام', hours: 'ساعات', minutes: 'دقائق', seconds: 'ثوانٍ',
+  },
+};
+
+function getLabels() {
+  return LABELS[document.documentElement.lang] || LABELS.en;
+}
+
 function buildCountdown(endDate) {
   const wrap = document.createElement('div');
   wrap.className = 'hero-sale-countdown';
   wrap.setAttribute('role', 'timer');
-  const units = [['days', 'Days'], ['hours', 'Hours'], ['minutes', 'Mins'], ['seconds', 'Secs']];
+  const labels = getLabels();
+  const units = ['days', 'hours', 'minutes', 'seconds'].map((key) => [key, labels[key]]);
   const values = {};
   units.forEach(([key, label]) => {
     const unit = document.createElement('div');
@@ -156,10 +171,11 @@ export default function decorate(block) {
     toggle.setAttribute('aria-controls', ctas.id);
     const label = document.createElement('span');
     toggle.append(label);
+    const labels = getLabels();
     const setExpanded = (expanded) => {
       block.classList.toggle('expanded', expanded);
       toggle.setAttribute('aria-expanded', String(expanded));
-      label.textContent = expanded ? 'Close' : 'Shop Now';
+      label.textContent = expanded ? labels.close : labels.shopNow;
     };
     setExpanded(false);
     toggle.addEventListener('click', () => setExpanded(!block.classList.contains('expanded')));
