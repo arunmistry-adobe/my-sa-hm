@@ -33,14 +33,15 @@ function renderSignIn(element) {
   })(element);
 }
 
-export function renderAuthDropdown(navTools) {
+export function renderAuthDropdown(navTools, labels = {}) {
+  const accountLabel = labels.Global?.MyAccount ?? 'My Account';
   const dropdownElement = document.createRange().createContextualFragment(`
  <div class="dropdown-wrapper nav-tools-wrapper">
-    <button type="button" class="nav-dropdown-button" aria-label="My Account" aria-haspopup="dialog" aria-expanded="false" aria-controls="login-modal"></button>
+    <button type="button" class="nav-dropdown-button" aria-label="${accountLabel}" aria-haspopup="dialog" aria-expanded="false" aria-controls="login-modal"></button>
     <div class="nav-auth-menu-panel nav-tools-panel">
       <div id="auth-dropin-container"></div>
       <ul class="authenticated-user-menu">
-         <li><a href="${rootLink('/customer/account')}">My Account</a></li>
+         <li><a href="${rootLink('/customer/account')}">${accountLabel}</a></li>
           <li><button>Logout</button></li>
       </ul>
     </div>
@@ -105,7 +106,7 @@ export function renderAuthDropdown(navTools) {
     } else {
       authDropDownMenuList.style.display = 'none';
       authDropinContainer.style.display = 'block';
-      loginButton.setAttribute('aria-label', 'My Account');
+      loginButton.setAttribute('aria-label', accountLabel);
       loginButton.innerHTML = `
       <svg
           width="25"

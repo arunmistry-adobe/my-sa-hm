@@ -412,9 +412,22 @@ export function applyTemplates(doc) {
  * // Get all placeholders including newly fetched ones
  * const updatedPlaceholders = await fetchPlaceholders();
  */
+/**
+ * Placeholder sheet that overrides the shared ones for the page's language:
+ * Arabic pages (/ar/…, or /content/ar/… in the local preview) layer
+ * /ar/placeholders.json over every sheet. Sheets are always served from the
+ * site root, also in the local preview.
+ * @returns {string} sheet path, or '' for the default language
+ */
+function getLanguagePlaceholders() {
+  const [, first] = window.location.pathname.replace(/^\/content(?=\/)/, '').split('/');
+  return first === 'ar' ? '/ar/placeholders.json' : '';
+}
+
 export async function fetchPlaceholders(path) {
   const rootPath = getRootPath();
-  const fallback = getMetadata('placeholders');
+  // page metadata wins over the language default
+  const fallback = getMetadata('placeholders') || getLanguagePlaceholders();
   window.placeholders = window.placeholders || {};
 
   // Track pending requests to prevent duplicate fetches
