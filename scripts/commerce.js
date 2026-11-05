@@ -715,7 +715,19 @@ export function renderCartItemPromotions(ctx) {
   return promotionsWrapper;
 }
 
+/**
+ * Products with their own authored (English) page, by lowercase SKU. Links to
+ * these products go to that page instead of the /products/ template.
+ */
+const PRODUCT_PAGES = {
+  'hmsa-p-1344386001': '/en/buy-workwear-jacket-dark-khaki-green-1',
+};
+
 export function getProductLink(urlKey, sku) {
+  // authored pages are English, so Arabic pages keep the template links
+  const [, first] = window.location.pathname.replace(/^\/content(?=\/)/, '').split('/');
+  const productPage = first !== 'ar' && sku && PRODUCT_PAGES[sku.toLowerCase()];
+  if (productPage) return productPage;
   if (!urlKey) {
     console.warn('getProductLink: urlKey is missing or empty', { urlKey, sku });
   }
