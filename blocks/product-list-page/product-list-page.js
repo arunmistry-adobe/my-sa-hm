@@ -154,6 +154,9 @@ export default async function decorate(block) {
     provider.render(Facets, {})($facets),
     // Product List
     provider.render(SearchResults, {
+      // H&M product photos are 2:3 portrait; the default 400x450 squashes them
+      imageWidth: 400,
+      imageHeight: 600,
       routeProduct: (product) => getProductLink(product.urlKey, product.sku),
       slots: {
         ProductImage: (ctx) => {
