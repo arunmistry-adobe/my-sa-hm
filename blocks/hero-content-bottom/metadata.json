@@ -1,0 +1,21 @@
+{
+  "variantName": "hero-content-bottom",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "Full-bleed campaign image with a title and single CTA anchored bottom-center; the whole banner is clickable",
+    "description": "Full-bleed campaign image; title and SHOP NOW button anchored bottom-center over the image, dark text (#222); whole banner clickable via the CTA link."
+  },
+  "contentPattern": {
+    "name": "image hero with bottom content",
+    "structure": "image cell (desktop picture, then optional mobile crop); content cell with h2 title and a SHOP NOW link",
+    "blockContent": "Row 1: campaign image (desktop picture, then mobile crop picture). Row 2: h2 title (e.g. \"S/S 2026\") and SHOP NOW link."
+  },
+  "options": [],
+  "memberVariantIds": [
+    "hero-content-bottom"
+  ],
+  "usage": "Use for the main campaign banner of a landing page.",
+  "reuseGuidance": "Reuse for any single-CTA image banner whose text sits at the bottom of the image.",
+  "sourceUrl": "https://sa.hm.com/en/"
+}

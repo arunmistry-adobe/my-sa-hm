@@ -17,3 +17,4 @@ scripts/__dropins__/**/*.map
 !AGENTS.md
 
 .scout/
+migration-work/navigation-validation/

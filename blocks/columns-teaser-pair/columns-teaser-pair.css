@@ -1,0 +1,138 @@
+/* H&M "price-point-two-column": two image teasers, white caption bar below each image */
+.columns-teaser-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.columns-teaser-pair .columns-teaser-pair-teaser {
+  position: relative;
+  margin: 0 0 12px;
+  text-align: start;
+  color: var(--brand-color-text);
+}
+
+.columns-teaser-pair .columns-teaser-pair-teaser.columns-teaser-pair-linked {
+  cursor: pointer;
+}
+
+/* image area: mobile shows the 2x3 crop at its natural ratio */
+.columns-teaser-pair .columns-teaser-pair-media {
+  overflow: hidden;
+}
+
+.columns-teaser-pair .columns-teaser-pair-media picture {
+  display: block;
+}
+
+.columns-teaser-pair .columns-teaser-pair-media img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.columns-teaser-pair .columns-teaser-pair-media .columns-teaser-pair-media-desktop {
+  display: none;
+}
+
+/* caption bar: title left, underlined CTA right, 20px below the image */
+.columns-teaser-pair .columns-teaser-pair-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 16px 0;
+}
+
+.columns-teaser-pair .columns-teaser-pair-content > * {
+  margin: 0;
+}
+
+.columns-teaser-pair .columns-teaser-pair-content :is(h1, h2, h3, h4, h5, h6, p) {
+  margin: 0;
+  font-family: var(--brand-font-body);
+  font-stretch: normal;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18.2px;
+  letter-spacing: normal;
+  color: var(--brand-color-text);
+}
+
+.columns-teaser-pair .columns-teaser-pair-content > :first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.columns-teaser-pair .columns-teaser-pair-content > :not(:first-child) {
+  flex: 0 0 auto;
+  margin-inline-start: 16px;
+}
+
+main .columns-teaser-pair a.columns-teaser-pair-cta:any-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--brand-color-background);
+  color: var(--brand-color-text);
+  font-family: var(--brand-font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18.2px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  text-decoration: underline;
+  white-space: nowrap;
+}
+
+main .columns-teaser-pair a.columns-teaser-pair-cta:any-link:hover,
+main .columns-teaser-pair a.columns-teaser-pair-cta:any-link:focus {
+  background-color: var(--brand-color-background);
+  color: var(--brand-color-text);
+  text-decoration: underline;
+}
+
+@media (min-width: 900px) {
+  .columns-teaser-pair {
+    grid-template-columns: none;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+  }
+
+  .columns-teaser-pair .columns-teaser-pair-teaser {
+    margin-bottom: 24px;
+  }
+
+  /* source: banner-bg height calc(100vh - (nav-height + 6rem)), 4x5 crop top-anchored */
+  .columns-teaser-pair .columns-teaser-pair-media {
+    height: calc(100vh - (var(--nav-height) + 6rem));
+  }
+
+  .columns-teaser-pair .columns-teaser-pair-media picture {
+    height: 100%;
+  }
+
+  .columns-teaser-pair .columns-teaser-pair-media img {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .columns-teaser-pair .columns-teaser-pair-media .columns-teaser-pair-media-desktop {
+    display: block;
+  }
+
+  .columns-teaser-pair .columns-teaser-pair-media .columns-teaser-pair-media-mobile {
+    display: none;
+  }
+
+  .columns-teaser-pair .columns-teaser-pair-content {
+    padding-inline: 20px;
+  }
+}

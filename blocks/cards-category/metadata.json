@@ -1,0 +1,21 @@
+{
+  "variantName": "cards-category",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "Grid of portrait category tiles with an uppercase label and an EXPLORE link below each image (4-up desktop, 2-up mobile)",
+    "description": "4-up grid of portrait image tiles (2-up on mobile); uppercase category label and EXPLORE link centered below each image, black text; minimal spacing, no borders."
+  },
+  "contentPattern": {
+    "name": "category tiles",
+    "structure": "one row per card: cell 1 image (optional mobile crop second); cell 2 category label heading and EXPLORE link",
+    "blockContent": "One row per card: cell 1 image; cell 2 category label (h4, e.g. DENIM) and EXPLORE link (inside h3). Preceded in section by default-content heading SELECTED COLLECTIONS."
+  },
+  "options": [],
+  "memberVariantIds": [
+    "cards-category"
+  ],
+  "usage": "Use for category/collection navigation tiles, typically after a SELECTED COLLECTIONS default-content heading.",
+  "reuseGuidance": "Reuse for any image + label + link tile grid; whole tile is clickable.",
+  "sourceUrl": "https://sa.hm.com/en/"
+}

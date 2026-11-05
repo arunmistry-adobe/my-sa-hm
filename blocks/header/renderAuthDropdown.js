@@ -36,7 +36,7 @@ function renderSignIn(element) {
 export function renderAuthDropdown(navTools) {
   const dropdownElement = document.createRange().createContextualFragment(`
  <div class="dropdown-wrapper nav-tools-wrapper">
-    <button type="button" class="nav-dropdown-button" aria-haspopup="dialog" aria-expanded="false" aria-controls="login-modal"></button>
+    <button type="button" class="nav-dropdown-button" aria-label="My Account" aria-haspopup="dialog" aria-expanded="false" aria-controls="login-modal"></button>
     <div class="nav-auth-menu-panel nav-tools-panel">
       <div id="auth-dropin-container"></div>
       <ul class="authenticated-user-menu">
@@ -101,15 +101,17 @@ export function renderAuthDropdown(navTools) {
       authDropDownMenuList.style.display = 'block';
       authDropinContainer.style.display = 'none';
       loginButton.textContent = `Hi, ${getUserNameCookie}`;
+      loginButton.removeAttribute('aria-label');
     } else {
       authDropDownMenuList.style.display = 'none';
       authDropinContainer.style.display = 'block';
+      loginButton.setAttribute('aria-label', 'My Account');
       loginButton.innerHTML = `
       <svg
           width="25"
           height="25"
           viewBox="0 0 24 24"
-          aria-label="My Account"
+          aria-hidden="true"
           >
           <g fill="none" stroke="#000000" stroke-width="1.5">
           <circle cx="12" cy="6" r="4"></circle>

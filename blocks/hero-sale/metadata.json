@@ -1,0 +1,21 @@
+{
+  "variantName": "hero-sale",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "Full-width promotional sale banner with an offer heading, a list of category CTA pills, an optional live countdown and a legal line",
+    "description": "Full-width promo banner, solid #f0f0eb background when no image; content left-middle; big bold price-tag style heading; white pill buttons with dark text stacked/inline; countdown timer text; small legal text #222."
+  },
+  "contentPattern": {
+    "name": "promo banner with CTA list",
+    "structure": "optional background image (desktop picture, then optional mobile crop); offer heading; one paragraph per category CTA link; optional end date paragraph in MM/DD/YYYY hh:mm:ss AM/PM format (rendered as a live countdown and hidden after expiry); legal text paragraph",
+    "blockContent": "Row 1: optional background image (desktop, then mobile crop). Row 2: offer heading (h2, e.g. \"PRE-EID DEALS | 40% OFF\"), stacked category CTA links (Women, Men, Kids, Home, Beauty), optional countdown end date (paragraph, e.g. \"03/21/2026 10:00:00 AM\"), small legal line."
+  },
+  "options": [],
+  "memberVariantIds": [
+    "hero-sale"
+  ],
+  "usage": "Use for time-limited sale/offer banners that link to several departments.",
+  "reuseGuidance": "Reuse for any promo strip with a heading plus multiple CTA links; use hero-content-bottom for single-CTA image campaigns.",
+  "sourceUrl": "https://sa.hm.com/en/"
+}

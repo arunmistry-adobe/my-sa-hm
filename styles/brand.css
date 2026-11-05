@@ -1,0 +1,47 @@
+/*
+ * H&M (sa.hm.com) brand tokens, extracted from the source site's computed styles.
+ * The source typeface (HM Slussen) is proprietary; Inter (text) and Archivo at
+ * 125% width (extended/wide display) are used as openly licensed lookalikes.
+ */
+:root {
+  /* fonts */
+  --brand-font-body: inter, inter-fallback, "helvetica neue", helvetica, arial, sans-serif;
+  --brand-font-display: archivo, archivo-fallback, "helvetica neue", helvetica, arial, sans-serif;
+  --brand-font-display-stretch: 125%;
+
+  /* colors */
+  --brand-color-background: #fff;
+  --brand-color-text: #000;
+  --brand-color-text-strong: #222;
+  --brand-color-text-muted: #333;
+  --brand-color-grey: #757575;
+  --brand-color-red: #e50010;
+  --brand-color-link: #ea1d25;
+  --brand-color-strip: #f0f0eb;
+  --brand-color-black: #000;
+
+  /* type scale (source: body/default content 14px, display headings wide bold) */
+  --brand-text-size: 1.4rem;
+  --brand-text-line-height: 1.3;
+  --brand-heading-size-xl: 2.8rem;
+  --brand-heading-size-xxl: 3.6rem;
+  --brand-heading-size-display: 4rem;
+
+  /* spacing */
+  --brand-gutter: 1.2rem;
+  --brand-section-gap: 4rem;
+
+  /* header: promo strip + main row (+ tabs row on mobile) */
+  --nav-height: 13.4rem;
+}
+
+@media (min-width: 900px) {
+  :root {
+    --brand-heading-size-xl: 3.2rem;
+    --brand-heading-size-xxl: 4.8rem;
+    --brand-heading-size-display: 6.4rem;
+    --brand-gutter: 2rem;
+    --brand-section-gap: 7rem;
+    --nav-height: 12rem;
+  }
+}
