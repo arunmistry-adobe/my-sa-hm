@@ -199,10 +199,21 @@ export default async function decorate(block) {
 
     block.classList.toggle('product-list-page--empty', totalCount === 0);
 
-    // Results Info
-    $resultInfo.innerHTML = payload.request?.phrase
-      ? `${totalCount} results found for <strong>"${payload.request.phrase}"</strong>.`
-      : `${totalCount} results found.`;
+    // Results Info, from the language's labels ({count} and {phrase} placeholders)
+    const phrase = payload.request?.phrase;
+    const { SearchResultsFound, SearchResultsFoundFor } = labels.Global || {};
+    const resultLabel = phrase
+      ? SearchResultsFoundFor || '{count} results found for {phrase}.'
+      : SearchResultsFound || '{count} results found.';
+    // the phrase comes from the URL, so it is added as text, never as HTML
+    $resultInfo.replaceChildren(...resultLabel.split(/(\{count\}|\{phrase\})/).filter(Boolean)
+      .map((part) => {
+        if (part === '{count}') return String(totalCount);
+        if (part !== '{phrase}') return part;
+        const strong = document.createElement('strong');
+        strong.textContent = `"${phrase}"`;
+        return strong;
+      }));
 
     // Update the view facets button with the number of filters
     if (payload.request.filter.length > 0) {
