@@ -18,3 +18,4 @@ scripts/__dropins__/**/*.map
 
 .scout/
 migration-work/navigation-validation/
+migration-work/commerce-validation/
