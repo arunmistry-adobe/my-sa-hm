@@ -1,3 +1,5 @@
+@import url('brand.css');
+
 /*
  * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -88,7 +90,7 @@
   --spacing-huge: 120px;
   --spacing-xhuge: 144px;
   --spacing-xxhuge: 192px;
-  --type-base-font-family: adobe-clean, roboto, roboto-fallback, system-ui, sans-serif;
+  --type-base-font-family: var(--brand-font-body);
   --type-display-1-font: normal normal 300 6rem/7.2rem var(--type-base-font-family);
   --type-display-1-letter-spacing: 0.04em;
   --type-display-2-font: normal normal 300 4.8rem/5.6rem var(--type-base-font-family);
@@ -125,16 +127,23 @@
   --type-details-overline-letter-spacing: 0.16em;
 
   /* Additional tokens */
-  --type-fixed-font-family: adobe-clean, "Roboto Mono", menlo, consolas, "Liberation Mono", monospace, system-ui, sans-serif;
-  --background-color: var(--color-neutral-50);
-  --nav-height: 6.4rem;
+  --type-fixed-font-family: menlo, consolas, "Liberation Mono", monospace;
+  --background-color: var(--brand-color-background);
+
+  /* --nav-height is defined in brand.css (promo strip + header rows) */
 }
 
-/* fallback font */
+/* fallback fonts, sized to limit layout shift while web fonts load */
 @font-face {
-  font-family: adobe-clean;
-  size-adjust: 100%;
-  src: local("Helvetica");
+  font-family: inter-fallback;
+  size-adjust: 107%;
+  src: local("Arial");
+}
+
+@font-face {
+  font-family: archivo-fallback;
+  size-adjust: 118%;
+  src: local("Arial");
 }
 
 html, body {
@@ -146,10 +155,10 @@ html {
 }
 
 body {
-  font: var(--type-body-1-default-font);
-  letter-spacing: var(--type-body-1-default-letter-spacing);
+  font: normal normal 400 1.6rem/1.4 var(--brand-font-body);
+  letter-spacing: normal;
   margin: 0;
-  color: var(--color-neutral-800);
+  color: var(--brand-color-text);
   background-color: var(--background-color);
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -196,34 +205,47 @@ h6 {
   scroll-margin: 40px;
 }
 
+/* source headings use HM Slussen wide bold; Archivo at 125% width stands in */
+h1,
+h2,
+h3 {
+  font-family: var(--brand-font-display);
+  font-stretch: var(--brand-font-display-stretch);
+  font-weight: 700;
+  letter-spacing: normal;
+}
+
 h1 {
-  font: var(--type-display-1-font);
-  letter-spacing: var(--type-display-1-letter-spacing);
+  font-size: var(--brand-heading-size-xxl);
 }
 
 h2 {
-  font: var(--type-display-2-font);
-  letter-spacing: var(--type-display-2-letter-spacing);
+  font-size: var(--brand-heading-size-xl);
 }
 
 h3 {
-  font: var(--type-display-3-font);
-  letter-spacing: var(--type-display-3-letter-spacing);
+  font-size: 2.4rem;
+  font-weight: 600;
+}
+
+h4,
+h5,
+h6 {
+  font-family: var(--brand-font-body);
+  font-weight: 600;
+  letter-spacing: normal;
 }
 
 h4 {
-  font: var(--type-headline-1-font);
-  letter-spacing: var(--type-headline-1-letter-spacing);
+  font-size: 2rem;
 }
 
 h5 {
-  font: var(--type-headline-2-strong-font);
-  letter-spacing: var(--type-headline-2-strong-letter-spacing);
+  font-size: 1.8rem;
 }
 
 h6 {
-  font: var(--type-headline-2-default-font);
-  letter-spacing: var(--type-headline-2-default-letter-spacing);
+  font-size: 1.6rem;
 }
 
 p,
@@ -273,18 +295,23 @@ button {
   font: inherit;
 }
 
-/* links */
+/* links: source links inherit the surrounding type and are underlined */
 a:not(.dropin-design a) {
-  color: var(--color-brand-500);
-  font: var(--type-body-1-strong-font);
-  letter-spacing: var(--type-body-1-strong-letter-spacing);
-  text-decoration: none;
+  color: var(--brand-color-text);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
   overflow-wrap: break-word;
 }
 
+/* source: no visible hover change on content links */
 a:not(.dropin-design a):hover {
-  color: var(--color-brand-600);
-  text-decoration: underline;
+  color: inherit;
+}
+
+a:not(.dropin-design a):focus-visible {
+  outline: 1px solid var(--brand-color-text);
+  outline-offset: 2px;
 }
 
 /* buttons */
@@ -376,6 +403,29 @@ main a.button.secondary:focus-visible,
 button.button.secondary:hover,
 button.button.secondary:focus-visible {
   color: var(--color-brand-600);
+}
+
+/* EDS button reset: source CTAs ("SHOP NOW", "VIEW ALL") are underlined text links */
+main .button-container {
+  display: inline;
+}
+
+main a.button:any-link {
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: var(--brand-color-text);
+  font-size: inherit;
+  font-weight: inherit;
+  padding: 0;
+  margin: 0;
+  text-decoration: underline;
+  white-space: normal;
+}
+
+main a.button:any-link:hover,
+main a.button:any-link:focus {
+  background: none;
 }
 
 
@@ -477,6 +527,98 @@ main > .section:first-of-type {
 @media (min-width: 900px) {
   main > .section > div {
     padding: 0 var(--spacing-big);
+  }
+}
+
+/* H&M campaign sections: full bleed, stacked with the source's gaps */
+main > .section:is(
+  .hero-sale-container,
+  .hero-content-bottom-container,
+  .columns-teaser-pair-container,
+  .product-recommendations-container,
+  .cards-category-container
+) {
+  margin: 0;
+}
+
+main > .section:is(
+  .hero-sale-container,
+  .hero-content-bottom-container,
+  .columns-teaser-pair-container,
+  .product-recommendations-container,
+  .cards-category-container
+) > div {
+  max-width: none;
+  padding: 0;
+}
+
+main > .section.hero-sale-container {
+  margin-bottom: 4.8rem;
+}
+
+main > .section.hero-content-bottom-container {
+  margin-bottom: 1.2rem;
+}
+
+/* "New In" heading row: 14px uppercase title left, underlined "View all" right */
+main > .section.product-recommendations-container > .default-content-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 3rem;
+  min-height: 6.2rem;
+  padding: 0 2rem;
+}
+
+main > .section.product-recommendations-container > .default-content-wrapper :is(h2, p) {
+  margin: 0;
+  font: 400 var(--brand-text-size)/1 var(--brand-font-body);
+  text-transform: uppercase;
+}
+
+main > .section.product-recommendations-container > .default-content-wrapper a {
+  color: var(--brand-color-text-muted);
+  line-height: 1.4;
+}
+
+/* "Selected collections": 2x2 tile grid centred at 1120px, title above */
+main > .section.cards-category-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-width: 112rem;
+  margin: 0 auto;
+}
+
+main > .section.cards-category-container > .default-content-wrapper :is(h3, h5) {
+  margin: 0;
+  padding: 0 1.6rem;
+  font-family: var(--brand-font-body);
+  font-stretch: normal;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--brand-color-text);
+}
+
+main > .section.cards-category-container > .default-content-wrapper :is(h3, h5) strong {
+  font-weight: 400;
+}
+
+@media (min-width: 900px) {
+  main > .section.hero-content-bottom-container {
+    margin-bottom: 2.4rem;
+  }
+
+  main > .section.cards-category-container > .default-content-wrapper :is(h3, h5) {
+    padding: 0;
+    font-size: 1.8rem;
+    margin: 1.67em 0 2.4rem;
+  }
+
+  main > .section.product-recommendations-container {
+    padding-top: 7rem;
   }
 }
 
@@ -646,4 +788,22 @@ body.columns main > .section:empty {
 */
 main[hidden] {
   display: none !important;
+}
+
+/*
+ * Campaign landing pages: a page title authored as a lone h1 directly above a
+ * campaign banner is kept for assistive tech and search but hidden visually;
+ * the banner is the visual headline.
+ */
+main > .section:first-of-type:is(.hero-sale-container, .hero-content-bottom-container)
+  > .default-content-wrapper:first-child:has(> h1:only-child) {
+  position: absolute;
+  clip-path: inset(50%);
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
 }

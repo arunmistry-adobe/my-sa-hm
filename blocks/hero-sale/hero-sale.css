@@ -1,0 +1,281 @@
+/*
+ * hero-sale: full-bleed campaign banner (source: hmns sale-banner, content-left-middle).
+ * Campaign colours were per-banner config on the source; the defaults below are the
+ * current live look and can be overridden per page/section via these custom properties.
+ */
+.hero-sale {
+  --hero-sale-bg: var(--brand-color-black);
+  --hero-sale-heading-color: var(--brand-color-link);
+
+  /* H&M red: source #ea1d25 is 4.47:1 on the white bar, below WCAG AA for small text */
+  --hero-sale-legal-color: var(--brand-color-red);
+  --hero-sale-countdown-color: var(--brand-color-link);
+  --hero-sale-toggle-color: var(--brand-color-black);
+  --hero-sale-cta-bg: var(--brand-color-background);
+  --hero-sale-cta-color: var(--brand-color-text-strong);
+  --hero-sale-bar-height: 5rem;
+
+  position: relative;
+
+  /* source: banner height = viewport minus header (12rem) and the 5rem bottom bar */
+  height: calc(100vh - 17rem);
+  background-color: var(--hero-sale-bg);
+  text-align: start;
+}
+
+.hero-sale .hero-sale-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-sale .hero-sale-media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-sale .hero-sale-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* mobile crop first, desktop image from 900px */
+.hero-sale .hero-sale-media .hero-sale-media-desktop {
+  display: none;
+}
+
+/* content fills the banner; absolutely placed children (legal bar, toggle, CTA panel)
+   are positioned against it */
+.hero-sale .hero-sale-content {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  padding: 1.6rem 3.2rem;
+  color: var(--brand-color-background);
+}
+
+.hero-sale .hero-sale-heading {
+  margin: 0;
+  color: var(--hero-sale-heading-color);
+  font-family: var(--brand-font-display);
+  font-stretch: var(--brand-font-display-stretch);
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: break-spaces;
+}
+
+/* countdown (optional end-date row) */
+.hero-sale .hero-sale-countdown {
+  display: flex;
+  gap: 0.8rem;
+  margin: 0;
+  color: var(--hero-sale-countdown-color);
+  font-family: var(--brand-font-display);
+  font-stretch: var(--brand-font-display-stretch);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.hero-sale .hero-sale-countdown-unit {
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+
+.hero-sale .hero-sale-countdown-value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* legal text: in the white bar directly below the banner, 70% wide */
+.hero-sale .hero-sale-legal {
+  position: absolute;
+  top: 100%;
+  left: 3.2rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 70%;
+  height: var(--hero-sale-bar-height);
+  padding: 0 2rem;
+  color: var(--hero-sale-legal-color);
+  font-family: var(--brand-font-body);
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.hero-sale .hero-sale-legal p {
+  margin: 0;
+  color: inherit;
+}
+
+/* "Shop Now" toggle at the right of the bottom bar */
+.hero-sale .hero-sale-toggle {
+  position: absolute;
+  right: 2rem;
+  bottom: -3.5rem;
+  z-index: 3;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--hero-sale-toggle-color);
+  font-family: var(--brand-font-body);
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* plus / minus icon (source: 16px icon hanging 15px past the label) */
+.hero-sale .hero-sale-toggle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -1.5rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  transform: translateY(-50%);
+  background:
+    linear-gradient(currentcolor, currentcolor) center / 1rem 1px no-repeat,
+    linear-gradient(currentcolor, currentcolor) center / 1px 1rem no-repeat;
+}
+
+.hero-sale.expanded .hero-sale-toggle::after {
+  background: linear-gradient(currentcolor, currentcolor) center / 1rem 1px no-repeat;
+}
+
+.hero-sale .hero-sale-toggle:focus-visible {
+  outline: 1px solid currentcolor;
+  outline-offset: 2px;
+}
+
+/* CTA panel: hidden until the toggle opens it over the dimmed banner */
+.hero-sale .hero-sale-ctas {
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero-sale.expanded .hero-sale-content::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: rgb(0 0 0 / 50%);
+}
+
+.hero-sale.expanded .hero-sale-ctas {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: block;
+  width: 100%;
+}
+
+.hero-sale .hero-sale-ctas li {
+  margin: 0;
+}
+
+main .hero-sale a.hero-sale-cta:any-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 1.8rem;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--hero-sale-cta-bg);
+  color: var(--hero-sale-cta-color);
+  font-family: var(--brand-font-body);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: start;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+main .hero-sale a.hero-sale-cta:any-link::after {
+  content: "";
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  background: url("/icons/hm/arrow-left.svg") center / contain no-repeat;
+  transform: scaleX(-1);
+}
+
+main .hero-sale a.hero-sale-cta:any-link:hover {
+  text-decoration: underline;
+}
+
+/* a single CTA is shown directly in the bottom bar, where the toggle would be */
+.hero-sale.hero-sale-single-cta .hero-sale-ctas {
+  position: absolute;
+  right: 2rem;
+  bottom: -3.5rem;
+  display: block;
+}
+
+main .hero-sale.hero-sale-single-cta a.hero-sale-cta:any-link {
+  padding: 0;
+  background: none;
+  color: var(--hero-sale-toggle-color);
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-decoration: underline;
+}
+
+main .hero-sale.hero-sale-single-cta a.hero-sale-cta:any-link::after {
+  content: none;
+}
+
+@media (min-width: 900px) {
+  .hero-sale .hero-sale-media .hero-sale-media-desktop {
+    display: block;
+  }
+
+  .hero-sale .hero-sale-media .hero-sale-media-mobile {
+    display: none;
+  }
+
+  .hero-sale .hero-sale-content {
+    padding: 2rem 4rem;
+  }
+
+  .hero-sale .hero-sale-heading {
+    font-size: 4rem;
+    line-height: 1.04;
+  }
+
+  .hero-sale .hero-sale-countdown {
+    font-size: 1.4rem;
+  }
+
+  .hero-sale .hero-sale-legal {
+    left: 4rem;
+    padding: 0 1rem;
+    font-size: 1.4rem;
+  }
+
+  .hero-sale.expanded .hero-sale-ctas {
+    width: 30vw;
+  }
+}

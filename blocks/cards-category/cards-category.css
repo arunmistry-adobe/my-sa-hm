@@ -1,0 +1,128 @@
+/*
+ * Source: .cards.top-offer-card.split-tile-banner (blocks/cards/hmns/cards.css,
+ * blocks/cards/hmns/top-offer-banner.css, topOffer banner-typography sheet).
+ * 2-column grid at every width, no column gap, 4.8rem row gap, max 112rem wide.
+ * Labels: "description" 16px/1.3 (18px desktop), CTA "preamble" 14px/1.3 (16px desktop),
+ * HM Slussen regular 400 (Inter stands in), #000, start aligned, no underline.
+ */
+.cards-category > ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 112rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4.8rem 0;
+}
+
+.cards-category .cards-category-card {
+  min-width: 0;
+}
+
+.cards-category .cards-category-card.cards-category-linked {
+  cursor: pointer;
+}
+
+.cards-category .cards-category-card-image {
+  line-height: 0;
+}
+
+.cards-category .cards-category-card-image picture {
+  display: block;
+}
+
+.cards-category .cards-category-card-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.cards-category .cards-category-card-image .cards-category-media-desktop {
+  display: none;
+}
+
+.cards-category .cards-category-card-body {
+  padding: 1.6rem 0;
+  text-align: start;
+  color: var(--brand-color-text);
+}
+
+.cards-category .cards-category-card-body > * {
+  margin: 0;
+  padding: 0 1.6rem;
+  font-family: var(--brand-font-body);
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--brand-color-text);
+}
+
+.cards-category .cards-category-card-body h4 {
+  margin-bottom: 0.8rem;
+  font-size: 1.6rem;
+  line-height: 1.3;
+}
+
+.cards-category .cards-category-card-body h4 em {
+  font-style: normal;
+}
+
+.cards-category .cards-category-card-body > :not(h4) {
+  font-size: 1.4rem;
+  line-height: 1.3;
+}
+
+.cards-category .cards-category-card-body strong {
+  font-weight: 400;
+}
+
+.cards-category .cards-category-card-body a:any-link,
+main .cards-category .cards-category-card-body a.button:any-link {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--brand-color-text);
+  text-decoration: none;
+  white-space: normal;
+}
+
+.cards-category .cards-category-card-body a:any-link:hover,
+main .cards-category .cards-category-card-body a.button:any-link:hover {
+  color: var(--brand-color-text);
+  background: none;
+}
+
+.cards-category .cards-category-card-body .button-container {
+  display: block;
+  margin: 0;
+}
+
+@media (min-width: 900px) {
+  .cards-category .cards-category-card-image .cards-category-media-desktop {
+    display: block;
+  }
+
+  .cards-category .cards-category-card-image .cards-category-media-mobile {
+    display: none;
+  }
+
+  .cards-category .cards-category-card-body > * {
+    padding: 0;
+  }
+
+  .cards-category .cards-category-card-body h4 {
+    font-size: 1.8rem;
+  }
+
+  .cards-category .cards-category-card-body > :not(h4) {
+    font-size: 1.6rem;
+  }
+}

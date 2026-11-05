@@ -1,0 +1,21 @@
+{
+  "variantName": "columns-teaser-pair",
+  "baseBlock": "columns",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "Two equal portrait image teasers side by side, each with an overlaid title and CTA, stacking on mobile",
+    "description": "Two equal 4:5 image teasers side by side with no gap-heavy styling; heading and SHOP NOW pill (white bg, #222 text) overlaid at the bottom of each image; stack vertically on mobile; each teaser clickable."
+  },
+  "contentPattern": {
+    "name": "two-up image teasers",
+    "structure": "one row with one cell per teaser; each cell: image (desktop picture, then optional mobile crop), h2 title, SHOP NOW link",
+    "blockContent": "One row, two columns. Each column: image (desktop picture then optional mobile crop), h2 title, SHOP NOW link."
+  },
+  "options": [],
+  "memberVariantIds": [
+    "columns-teaser-pair"
+  ],
+  "usage": "Use for a two-up pair of editorial teasers.",
+  "reuseGuidance": "Reuse for any side-by-side image teasers with an overlaid CTA; more than two cells render as equal columns.",
+  "sourceUrl": "https://sa.hm.com/en/"
+}
