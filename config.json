@@ -4,12 +4,12 @@
       "commerce-endpoint": "https://na1-sandbox.api.commerce.adobe.com/UhX1eEtji84ATj1LHondyo/graphql",
       "headers": {
         "all": {
-          "Store": "default"
+          "Store": "hm_sa"
         },
         "cs": {
-          "Magento-Store-Code": "main_website_store",
-          "Magento-Store-View-Code": "default",
-          "Magento-Website-Code": "base"
+          "Magento-Store-Code": "hm_sa",
+          "Magento-Store-View-Code": "hm_sa",
+          "Magento-Website-Code": "hm_sa"
         }
       },
       "commerce-b2b-enabled": false,
@@ -20,16 +20,16 @@
         "base-currency-code": "USD",
         "environment": "Testing",
         "environment-id": "UhX1eEtji84ATj1LHondyo",
-        "store-code": "main_website_store",
-        "store-id": "main_website_store",
-        "store-name": "Default Store View",
+        "store-code": "hm_sa",
+        "store-id": "hm_sa",
+        "store-name": "hm_sa",
         "store-url": "https://coresaas-subgraph-external:8000/UhX1eEtji84ATj1LHondyo/",
-        "store-view-code": "default",
-        "store-view-id": "default",
-        "store-view-name": "Default Store View",
-        "website-code": "base",
-        "website-id": "base",
-        "website-name": "Main Website"
+        "store-view-code": "hm_sa",
+        "store-view-id": "hm_sa",
+        "store-view-name": "hm_sa",
+        "website-code": "hm_sa",
+        "website-id": "hm_sa",
+        "website-name": "hm_sa"
       },
       "plugins": {
         "picker": {

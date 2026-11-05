@@ -605,6 +605,8 @@ export default async function decorate(block) {
   const searchButton = navTools.querySelector('.nav-search-button');
   const searchForm = searchPanel.querySelector('#search-bar-form');
   const searchResult = searchPanel.querySelector('.search-bar-result');
+  // Search results page of the page's language (/en/search, /ar/search)
+  const searchPath = getContentPath(`/${getLocale().lang}/search`);
 
   async function toggleSearch(state) {
     const pageSize = 4;
@@ -657,7 +659,7 @@ export default async function decorate(block) {
               const viewAllResultsButton = await UI.render(Button, {
                 children: labels.Global?.SearchViewAll,
                 variant: 'secondary',
-                href: rootLink('/search'),
+                href: searchPath,
               })(viewAllResultsWrapper);
 
               ctx.appendChild(viewAllResultsWrapper);
@@ -665,7 +667,7 @@ export default async function decorate(block) {
               ctx.onChange((next) => {
                 viewAllResultsButton?.setProps((prev) => ({
                   ...prev,
-                  href: `${rootLink('/search')}?q=${encodeURIComponent(next.variables?.phrase || '')}`,
+                  href: `${searchPath}?q=${encodeURIComponent(next.variables?.phrase || '')}`,
                 }));
               });
             },
@@ -676,7 +678,7 @@ export default async function decorate(block) {
           e.preventDefault();
           const query = e.target.search.value;
           if (query.length) {
-            window.location.href = `${rootLink('/search')}?q=${encodeURIComponent(query)}`;
+            window.location.href = `${searchPath}?q=${encodeURIComponent(query)}`;
           }
         });
 

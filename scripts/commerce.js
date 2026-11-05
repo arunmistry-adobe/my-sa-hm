@@ -660,7 +660,8 @@ function getSkuFromUrl() {
  * @returns {string|null} The defaultSku value from the block, or null if not found
  */
 function getDefaultSkuFromBlock() {
-  const productDetailsBlock = document.querySelector('.product-details.block');
+  // The PDP initializer runs before blocks are decorated, so don't require `.block`.
+  const productDetailsBlock = document.querySelector('main .product-details');
   if (!productDetailsBlock) {
     console.warn('No product-details block found');
     return null;
@@ -727,15 +728,16 @@ export function getProductLink(urlKey, sku) {
 }
 
 /**
- * Gets the product SKU from metadata or URL fallback.
- * @returns {string|null} The SKU from metadata or URL, or null if not found
+ * Gets the product SKU from metadata or URL, falling back to the block's defaultSku
+ * so authored product pages (e.g. /en/buy-…) work at their own URL.
+ * @returns {string|null} The SKU, or null if not found
  */
 export function getProductSku() {
   if (isProductTemplate() && (IS_UE || IS_DA)) {
     return getDefaultSkuFromBlock();
   }
 
-  return getMetadata('sku') || getSkuFromUrl();
+  return getMetadata('sku') || getSkuFromUrl() || getDefaultSkuFromBlock();
 }
 
 /**
