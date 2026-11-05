@@ -3,7 +3,7 @@ import { events } from '@dropins/tools/event-bus.js';
 
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { getMetadata, loadSections } from '../../scripts/aem.js';
-import { decorateMain } from '../../scripts/scripts.js';
+import { decorateMain, getContentPath } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { fetchPlaceholders, getProductLink, rootLink } from '../../scripts/commerce.js';
 
@@ -44,17 +44,13 @@ function rebaseMedia(doc, base) {
 }
 
 /**
- * Loads the nav document. The local preview serves content under /content/,
- * production serves it at the root, so try both.
+ * Loads the nav document (under /content/ in the local preview, at the root
+ * on published sites).
  * @returns {Promise<HTMLElement|null>} decorated <main> holding the nav sections
  */
 async function loadNav() {
-  let path = '/content/nav.plain.html';
-  let resp = await fetch(path);
-  if (!resp.ok) {
-    path = '/nav.plain.html';
-    resp = await fetch(path);
-  }
+  const path = getContentPath('/nav.plain.html');
+  const resp = await fetch(path);
   if (!resp.ok) return null;
 
   const doc = new DOMParser().parseFromString(await resp.text(), 'text/html');

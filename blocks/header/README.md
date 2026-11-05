@@ -35,7 +35,7 @@ No events are directly emitted by this block. However, it triggers events indire
 
 The block reads the following metadata tags:
 
-- `nav` - not used. The nav document is always fetched from `/content/nav.plain.html` (local preview), falling back to `/nav.plain.html` (production)
+- `nav` - not used. The nav document is fetched from `/nav.plain.html`, or from `/content/nav.plain.html` when the page itself is served under `/content/` (local preview)
 - `wishlist` - Path to wishlist page (default: `/wishlist`)
 - `mini-cart` - Path to mini cart fragment (default: `/mini-cart`)
 

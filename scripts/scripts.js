@@ -239,6 +239,17 @@ export function setImageSizes(root, sizes) {
   });
 }
 
+/**
+ * Resolves the path of an authored content document (e.g. '/nav.plain.html').
+ * The local preview serves pages and content under /content/, published sites
+ * at the root, so the current page's path tells which one applies.
+ * @param {string} path root-relative content path
+ * @returns {string}
+ */
+export function getContentPath(path) {
+  return window.location.pathname.startsWith('/content/') ? `/content${path}` : path;
+}
+
 function buildDynamicMediaImages(main) {
   // Anchors carrying DM URLs from the markdown round-trip. The transformer
   // turns <img DM> into <a href=DM-URL> (or <a href=/page title=DM-URL>

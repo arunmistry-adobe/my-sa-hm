@@ -9,13 +9,7 @@ import {
 import createModal from '../modal/modal.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { loadSections } from '../../scripts/aem.js';
-import { decorateMain } from '../../scripts/scripts.js';
-
-/**
- * Candidate locations of the footer fragment, tried in order.
- * Local preview serves authored content under /content/, production at the root.
- */
-const FRAGMENT_PATHS = ['/content/footer.plain.html', '/footer.plain.html'];
+import { decorateMain, getContentPath } from '../../scripts/scripts.js';
 
 const DESKTOP_MEDIA = window.matchMedia('(min-width: 900px)');
 
@@ -84,7 +78,8 @@ function resolveMediaPaths(container, baseUrl) {
  * @returns {Promise<HTMLElement|null>} decorated main element
  */
 async function loadContentFragment() {
-  const result = await fetchFirstAvailable(FRAGMENT_PATHS);
+  // under /content/ in the local preview, at the root on published sites
+  const result = await fetchFirstAvailable([getContentPath('/footer.plain.html')]);
   if (!result) return null;
   // parse in an inert document so relative images are not requested from the page path
   const doc = new DOMParser().parseFromString(result.html, 'text/html');
