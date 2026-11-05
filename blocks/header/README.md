@@ -38,6 +38,13 @@ The block reads the following metadata tags:
 - `nav` - not used. The nav document is chosen by the page's language (`getLocale()`). It is `{prefix}/nav.plain.html` (e.g. `/ar/nav.plain.html` for Arabic pages), with `/nav.plain.html` as the fallback when a language folder has no nav. Both are under `/content/` when the page itself is served from there (local preview)
 - `wishlist` - Path to wishlist page (default: `/wishlist`)
 - `mini-cart` - Path to mini cart fragment (default: `/mini-cart`)
+- `placeholders` - optional override sheet for UI labels (see below)
+
+### UI labels (placeholders)
+
+Button names and other UI text come from the `Global.*` keys of the placeholder sheets (`fetchPlaceholders()` in `scripts/commerce.js`), with English defaults in code: `Search`, `SearchViewAll`, `OpenNavigation`, `CloseNavigation`, `Navigation`, `Back`, `Language`, `Wishlist`, `MyAccount`, `Cart`, `CartWithItem`, `CartWithItems`, `CartUpdatedWithItem`, `CartUpdatedWithItems`, `CartUpdatedEmpty` (`{count}` is replaced with the cart quantity).
+
+Arabic pages (`/ar/…`) layer `/ar/placeholders.json` over every shared sheet; a page's `placeholders` metadata overrides that. The shared sheets are merged per top-level group, so the Arabic sheet must contain the complete `Global` group, not only the keys it translates.
 
 ## Behavior Patterns
 

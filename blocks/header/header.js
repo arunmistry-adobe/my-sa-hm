@@ -439,7 +439,7 @@ export default async function decorate(block) {
   navTools.append(searchFragment);
 
   /** Account (auth dropdown) */
-  renderAuthDropdown(navTools);
+  renderAuthDropdown(navTools, labels);
 
   /** Wishlist */
   const wishlist = document.createRange().createContextualFragment(`
