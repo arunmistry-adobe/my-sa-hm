@@ -1,15 +1,15 @@
 // Drop-in Tools
 import { events } from '@dropins/tools/event-bus.js';
 
-import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { getMetadata, loadSections } from '../../scripts/aem.js';
 import { decorateMain, getContentPath, getLocale } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { fetchPlaceholders, getProductLink, rootLink } from '../../scripts/commerce.js';
+import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
 
 import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
 import renderSellerAssistedBuyingBanner from './renderSellerAssistedBuyingBanner.js';
+import renderSearchPanel from './search-panel.js';
 
 const labels = await fetchPlaceholders();
 
@@ -425,18 +425,12 @@ export default async function decorate(block) {
   const navTools = createElement('div', 'nav-tools');
   nav.append(navTools);
 
-  /** Search */
-  const searchFragment = document.createRange().createContextualFragment(`
-  <div class="search-wrapper nav-tools-wrapper">
-    <button type="button" class="nav-search-button" aria-haspopup="dialog" aria-expanded="false" aria-controls="search-panel">${labels.Global?.Search ?? 'Search'}</button>
-    <div class="nav-search-input nav-search-panel nav-tools-panel" id="search-panel">
-      <form id="search-bar-form"></form>
-      <div class="search-bar-result" style="display: none;"></div>
-    </div>
-  </div>
-  `);
-
-  navTools.append(searchFragment);
+  /** Search: panel sliding in from the inline end, results page of the page's language */
+  const search = renderSearchPanel(navTools, {
+    labels,
+    searchPath: getContentPath(`/${getLocale().lang}/search`),
+    overlay,
+  });
 
   /** Account (auth dropdown) */
   renderAuthDropdown(navTools, labels);
@@ -601,121 +595,16 @@ export default async function decorate(block) {
   }, { eager: true });
 
   /** Search behaviour */
-  const searchPanel = navTools.querySelector('.nav-search-panel');
-  const searchButton = navTools.querySelector('.nav-search-button');
-  const searchForm = searchPanel.querySelector('#search-bar-form');
-  const searchResult = searchPanel.querySelector('.search-bar-result');
-  // Search results page of the page's language (/en/search, /ar/search)
-  const searchPath = getContentPath(`/${getLocale().lang}/search`);
-
-  async function toggleSearch(state) {
-    const pageSize = 4;
-
+  const searchPanel = search.panel;
+  const searchButton = search.wrapper.querySelector('.nav-search-button');
+  const toggleSearch = (state) => {
     if (state) {
-      await withLoadingState(searchPanel, searchButton, async () => {
-        await import('../../scripts/initializers/search.js');
-
-        // Load search components in parallel
-        const [
-          { search },
-          { render },
-          { SearchResults },
-          { provider: UI, Input, Button },
-        ] = await Promise.all([
-          import('@dropins/storefront-product-discovery/api.js'),
-          import('@dropins/storefront-product-discovery/render.js'),
-          import('@dropins/storefront-product-discovery/containers/SearchResults.js'),
-          import('@dropins/tools/components.js'),
-          import('@dropins/tools/lib.js'),
-        ]);
-
-        render.render(SearchResults, {
-          skeletonCount: pageSize,
-          scope: 'popover',
-          routeProduct: ({ urlKey, sku }) => getProductLink(urlKey, sku),
-          onSearchResult: (results) => {
-            searchResult.style.display = results.length > 0 ? 'block' : 'none';
-          },
-          slots: {
-            ProductImage: (ctx) => {
-              const { product, defaultImageProps } = ctx;
-              const anchorWrapper = document.createElement('a');
-              anchorWrapper.href = getProductLink(product.urlKey, product.sku);
-
-              tryRenderAemAssetsImage(ctx, {
-                alias: product.sku,
-                imageProps: defaultImageProps,
-                wrapper: anchorWrapper,
-                params: {
-                  width: defaultImageProps.width,
-                  height: defaultImageProps.height,
-                },
-              });
-            },
-            Footer: async (ctx) => {
-              // View all results button
-              const viewAllResultsWrapper = document.createElement('div');
-
-              const viewAllResultsButton = await UI.render(Button, {
-                children: labels.Global?.SearchViewAll,
-                variant: 'secondary',
-                href: searchPath,
-              })(viewAllResultsWrapper);
-
-              ctx.appendChild(viewAllResultsWrapper);
-
-              ctx.onChange((next) => {
-                viewAllResultsButton?.setProps((prev) => ({
-                  ...prev,
-                  href: `${searchPath}?q=${encodeURIComponent(next.variables?.phrase || '')}`,
-                }));
-              });
-            },
-          },
-        })(searchResult);
-
-        searchForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const query = e.target.search.value;
-          if (query.length) {
-            window.location.href = `${searchPath}?q=${encodeURIComponent(query)}`;
-          }
-        });
-
-        UI.render(Input, {
-          name: 'search',
-          placeholder: labels.Global?.Search,
-          onValue: (phrase) => {
-            if (!phrase) {
-              search(null, { scope: 'popover' });
-              return;
-            }
-
-            if (phrase.length < 3) {
-              return;
-            }
-
-            search({
-              phrase,
-              pageSize,
-              filter: [
-                { attribute: 'visibility', in: ['Search', 'Catalog, Search'] },
-              ],
-            }, { scope: 'popover' });
-          },
-        })(searchForm);
-      });
+      toggleMiniCart(false);
+      toggleLanguage(false);
     }
-
-    togglePanel(searchPanel, state);
-    searchButton.setAttribute(
-      'aria-expanded',
-      searchPanel.classList.contains('nav-tools-panel--show') ? 'true' : 'false',
-    );
-    if (state) searchForm?.querySelector('input')?.focus();
-  }
-
-  searchButton.addEventListener('click', () => toggleSearch(!searchPanel.classList.contains('nav-tools-panel--show')));
+    search.toggle(state);
+  };
+  searchButton.addEventListener('click', () => toggleSearch(true));
 
   /** Language switcher */
   const languageLinks = tools ? [...tools.querySelectorAll('a[href]')] : [];
@@ -924,6 +813,8 @@ export default async function decorate(block) {
     if (e.code !== 'Escape') return;
     if (!drawer.hidden) {
       toggleDrawer(false);
+    } else if (!searchPanel.hidden) {
+      toggleSearch(false);
     } else if (languageOptions && !languageOptions.hidden) {
       toggleLanguage(false);
       languageButton.focus();
