@@ -31,7 +31,7 @@ const LABELS = {
     shopNow: 'Shop Now', close: 'Close', days: 'Days', hours: 'Hours', minutes: 'Mins', seconds: 'Secs',
   },
   ar: {
-    shopNow: 'تسوق الآن', close: 'إغلاق', days: 'أيام', hours: 'ساعات', minutes: 'دقائق', seconds: 'ثوانٍ',
+    shopNow: 'تسوقي الآن', close: 'إغلاق', days: 'أيام', hours: 'ساعات', minutes: 'دقائق', seconds: 'ثوانٍ',
   },
 };
 
