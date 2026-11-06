@@ -31,8 +31,10 @@
   margin-top: var(--spacing-medium);
 }
 
+/* the 2:3 portrait photos keep their full height, so a height cap only made them
+   spill over the content below: let the gallery grow to the photo instead */
 .product-details__gallery .pdp-carousel {
-  max-height: 60vh;
+  max-height: none;
 }
 
 .product-details__gallery .pdp-carousel--thumbnailsRow {

@@ -21,7 +21,8 @@ import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js
 // Block-level
 import { readBlockConfig } from '../../scripts/aem.js';
 import {
-  fetchPlaceholders, getProductLink, getStoreIdentifier, isConsentGranted,
+  CS_FETCH_GRAPHQL, fetchPlaceholders, getProductLink, getProductSku, getStoreIdentifier,
+  isConsentGranted,
 } from '../../scripts/commerce.js';
 
 // Initializers
@@ -118,7 +119,53 @@ export function getPurchaseHistory() {
   }
 }
 
+// Recommendation page types the catalog accepts (pageType block setting)
+const PAGE_TYPES = ['CMS', 'Category', 'Product', 'Cart', 'Checkout', 'PageBuilder'];
+
+/**
+ * Ids of the active recommendation units Commerce has for a page type, in Admin's order.
+ * @param {string} pageType one of PAGE_TYPES
+ * @param {string} [currentSku] the product being viewed, for product page units
+ * @returns {Promise<string[]>}
+ */
+async function fetchUnitIds(pageType, currentSku) {
+  try {
+    const { data } = await CS_FETCH_GRAPHQL.fetchGraphQl(
+      `query units($sku: String) { recommendations(pageType: ${pageType}, currentSku: $sku) { results { unitId } } }`,
+      { variables: { sku: currentSku || null } },
+    );
+    return (data?.recommendations?.results || []).map((unit) => unit.unitId).filter(Boolean);
+  } catch (e) {
+    return [];
+  }
+}
+
 export default async function decorate(block) {
+  // Automatic mode: with a pageType instead of a recId, show one recommendations
+  // block per active unit of that page type, so units are managed in Commerce Admin
+  const { pagetype, recid: configuredRecId } = readBlockConfig(block);
+  const pageType = PAGE_TYPES.find((type) => type.toLowerCase() === String(pagetype || '').toLowerCase());
+  if (!configuredRecId && pageType) {
+    const unitIds = await fetchUnitIds(pageType, pageType === 'Product' ? getProductSku() : undefined);
+    const unitBlocks = unitIds.map((unitId) => {
+      const unitBlock = document.createElement('div');
+      unitBlock.className = 'product-recommendations block';
+      unitBlock.dataset.blockName = 'product-recommendations';
+      unitBlock.dataset.blockStatus = 'loaded';
+      const row = document.createElement('div');
+      [document.createElement('div'), document.createElement('div')].forEach((cell, i) => {
+        cell.textContent = i ? unitId : 'recId';
+        row.append(cell);
+      });
+      unitBlock.append(row);
+      return unitBlock;
+    });
+    // no units yet: show nothing rather than an empty heading
+    block.replaceWith(...unitBlocks);
+    await Promise.all(unitBlocks.map((unitBlock) => decorate(unitBlock)));
+    return;
+  }
+
   const labels = await fetchPlaceholders();
 
   // Hide configuration rows if they exist
