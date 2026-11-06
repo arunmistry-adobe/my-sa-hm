@@ -610,11 +610,33 @@ export default async function decorate(block) {
   const languageLinks = tools ? [...tools.querySelectorAll('a[href]')] : [];
   let languageButton;
   let languageOptions;
+  let samePageChecked = false;
+  // Point the other languages at this page in their folder (/en/x → /ar/x, keeping the
+  // query) when that page exists; otherwise they keep their homepage link. Pages
+  // outside a language folder (cart, /products/…) have no translation. Checked once.
+  const linkSamePage = () => {
+    if (samePageChecked || !languageOptions) return;
+    samePageChecked = true;
+    const [, folder, ...rest] = window.location.pathname.replace(/^\/content(?=\/)/, '').split('/');
+    if (folder !== getLocale().lang) return;
+    languageOptions.querySelectorAll('.nav-language-option:not(.active) .nav-language-link').forEach(async (link) => {
+      const [, target] = new URL(link.href).pathname.replace(/^\/content(?=\/)/, '').split('/');
+      if (!target) return;
+      const page = getContentPath(`/${target}/${rest.join('/')}`);
+      try {
+        const res = await fetch(page, { method: 'HEAD' });
+        if (res.ok) link.href = `${page}${window.location.search}${window.location.hash}`;
+      } catch {
+        // keep the homepage link
+      }
+    });
+  };
   const toggleLanguage = (state) => {
     if (!languageButton) return;
     const show = state ?? languageOptions.hidden;
     languageOptions.hidden = !show;
     languageButton.setAttribute('aria-expanded', show ? 'true' : 'false');
+    if (show) linkSamePage();
   };
   if (languageLinks.length) {
     const labelEl = [...tools.querySelectorAll('p')].find((p) => !p.querySelector('a') && p.textContent.trim());
@@ -649,6 +671,8 @@ export default async function decorate(block) {
       languageOptions.append(li);
     });
     languageButton.addEventListener('click', () => toggleLanguage());
+    // start the check before the menu opens, so the links are ready when clicked
+    ['pointerenter', 'focus'].forEach((type) => languageButton.addEventListener(type, linkSamePage, { once: true }));
     language.append(languageButton, languageOptions);
     navTools.append(language);
   }
