@@ -556,8 +556,21 @@ export async function fetchPlaceholders(path) {
           target[lastKey] = Value;
         });
 
-        // Merge the new placeholders into the global merged object
-        const merged = Object.assign(window.placeholders._merged, placeholders);
+        // Merge the new placeholders into the global merged object. Groups (e.g. Global) are
+        // merged key by key, so a later sheet's group doesn't drop keys an earlier one added
+        // (on /ar/ pages every sheet repeats the Arabic Global keys).
+        const deepMerge = (target, source) => {
+          Object.entries(source).forEach(([key, value]) => {
+            const isGroup = (v) => v && typeof v === 'object' && !Array.isArray(v);
+            if (isGroup(value) && isGroup(target[key])) {
+              deepMerge(target[key], value);
+            } else {
+              target[key] = value;
+            }
+          });
+          return target;
+        };
+        const merged = deepMerge(window.placeholders._merged, placeholders);
 
         resolve(merged);
       })
