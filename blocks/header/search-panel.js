@@ -81,16 +81,22 @@ function renderProduct(product) {
   return li;
 }
 
+// Home page recommendation types the panel uses, in order of preference
+const TRENDING_TYPES = ['trending', 'mostviewed'];
+
 /**
- * Products of the Home page "Trending" recommendation unit, or the first catalog products
- * while no such unit is set up in Commerce.
+ * Products of the Home page "Trending" recommendation unit (or "Most viewed" when there is no
+ * Trending one), or the first catalog products while neither is set up in Commerce.
  */
 async function fetchTrendingProducts() {
   try {
     const { data } = await CS_FETCH_GRAPHQL.fetchGraphQl(
       `query { recommendations(pageType: CMS) { results { typeId productsView { ${PRODUCT_FIELDS} } } } }`,
     );
-    const unit = data?.recommendations?.results?.find((u) => u.typeId === 'trending' && u.productsView?.length);
+    // type ids are compared without case or separators (most-viewed, most_viewed, ...)
+    const typeOf = (u) => String(u.typeId || '').toLowerCase().replace(/[^a-z]/g, '');
+    const units = (data?.recommendations?.results || []).filter((u) => u.productsView?.length);
+    const unit = TRENDING_TYPES.map((type) => units.find((u) => typeOf(u) === type)).find(Boolean);
     if (unit) return unit.productsView.slice(0, PRODUCT_COUNT);
   } catch (e) {
     // recommendations unavailable: fall back to the catalog
