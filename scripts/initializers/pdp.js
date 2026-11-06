@@ -14,9 +14,10 @@ import {
 } from '../commerce.js';
 import { getMetadata } from '../aem.js';
 
+// H&M product photos are 2:3 portrait
 export const IMAGES_SIZES = {
   width: 960,
-  height: 1191,
+  height: 1440,
 };
 
 /**
@@ -102,6 +103,12 @@ await initializeDropin(async () => {
   const models = {
     ProductDetails: {
       initialData: { ...product },
+    },
+    ProductOptions: {
+      // show dropdown options (e.g. Size) as text swatch boxes, like the source site
+      optionsTransformer: (options) => options.map((option) => (
+        option.type === 'dropdown' ? { ...option, type: 'text' } : option
+      )),
     },
   };
 
