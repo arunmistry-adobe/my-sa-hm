@@ -140,11 +140,15 @@ export default function renderSearchPanel(navTools, { labels, searchPath, overla
     search: g.Search ?? 'Search',
     close: g.CloseSearch ?? 'Close search',
     suggestions: g.SearchSuggestions ?? 'Suggestions',
+    trendingSearches: g.SearchTrendingSearches ?? 'Trending Searches',
     trending: g.SearchTrendingProducts ?? 'Trending products',
     resultsFor: g.SearchResultsFor ?? 'Results for "{phrase}"',
     noResults: g.SearchNoResults ?? 'No results found for "{phrase}"',
     viewAll: g.SearchViewAll ?? 'View All',
   };
+  // authored in the placeholders sheet: terms separated by commas or line breaks
+  const trendingTerms = String(g.SearchTrendingTerms || '').split(/[,\n]/)
+    .map((term) => term.trim()).filter(Boolean).slice(0, 10);
 
   const wrapper = createElement('div', 'search-wrapper nav-tools-wrapper');
   const button = createElement('button', 'nav-search-button', {
@@ -201,8 +205,20 @@ export default function renderSearchPanel(navTools, { labels, searchPath, overla
     products.hidden = !items.length;
   }
 
+  function showTermList(heading, list, phrase = '') {
+    termsHeading.replaceChildren(...heading);
+    termList.replaceChildren(...list.map((term) => {
+      const li = createElement('li', 'nav-search-term');
+      const a = createElement('a', '', { href: resultsUrl(term) });
+      a.append(...highlight(term, phrase));
+      li.append(a);
+      return li;
+    }));
+  }
+
   async function showTrending() {
-    terms.hidden = true;
+    showTermList([text.trendingSearches], trendingTerms);
+    terms.hidden = !trendingTerms.length;
     trending = trending || fetchTrendingProducts();
     const items = await trending;
     if (input.value.trim().length >= MIN_CHARS) return;
@@ -225,17 +241,9 @@ export default function renderSearchPanel(navTools, { labels, searchPath, overla
 
     const items = result?.items || [];
     if (suggestions.length) {
-      termsHeading.textContent = text.suggestions;
-      termList.replaceChildren(...suggestions.map((term) => {
-        const li = createElement('li', 'nav-search-term');
-        const a = createElement('a', '', { href: resultsUrl(term) });
-        a.append(...highlight(term, phrase));
-        li.append(a);
-        return li;
-      }));
+      showTermList([text.suggestions], suggestions, phrase);
     } else if (!items.length) {
-      termsHeading.replaceChildren(...fillLabel(text.noResults, { phrase }));
-      termList.replaceChildren();
+      showTermList(fillLabel(text.noResults, { phrase }), []);
     }
     terms.hidden = !suggestions.length && !!items.length;
 
