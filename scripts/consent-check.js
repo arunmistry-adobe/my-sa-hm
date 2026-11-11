@@ -19,7 +19,10 @@ function hasConsent() {
     return ['accept', 'true', '1', 'yes'].includes(consent.toLowerCase());
   }
   // default: decline
-  return false;
+  // return false;
+
+  // default: accept (demo site - no CMP required)
+return true;
 }
 
 /**
